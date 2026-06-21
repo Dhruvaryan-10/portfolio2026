@@ -1,3 +1,11 @@
+export type SimpleProject = {
+  name: string;
+  imageKey: string;
+  description: string;
+  gradient: [string, string];
+  url: string;
+  tech: string[];
+};
 export const PROJECTS: SimpleProject[] = [
   {
     name: "SmartCA – AI-Powered Financial Advisory Assistant",
