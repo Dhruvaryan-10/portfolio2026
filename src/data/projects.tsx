@@ -1,3 +1,4 @@
+
 export type SimpleProject = {
   name: string;
   imageKey: string;

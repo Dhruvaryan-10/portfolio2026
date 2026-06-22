@@ -6,7 +6,7 @@ import { SectionHeader } from "./section-header";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { PROJECTS, SimpleProject } from "@/data/projects";
+import { PROJECTS } from "@/data/projects";
 
 const tiltOptions = {
   max: 5,
@@ -105,7 +105,7 @@ const ProjectsSection = () => {
 };
 
 type ProjectCardProps = {
-  project: SimpleProject;
+  project: (typeof PROJECTS)[number];
   isDesktop: boolean;
 };
 
