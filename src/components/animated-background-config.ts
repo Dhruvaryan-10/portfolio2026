@@ -3,8 +3,8 @@ export type Section = "hero" | "about" | "skills" | "experience" | "projects" | 
 export const STATES = {
   hero: {
     desktop: {
-      scale: { x: 0.275, y: 0.275, z: 0.275 },
-      position: { x: 350, y: -120, z: 0 },
+      scale: { x: 0.24, y: 0.24, z: 0.24 },
+      position: { x: 280, y: -120, z: 0 },
       rotation: { x: 0, y: 0, z: 0 },
     },
     mobile: {

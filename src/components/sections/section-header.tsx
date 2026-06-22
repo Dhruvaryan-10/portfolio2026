@@ -14,11 +14,11 @@ export const SectionHeader = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("top-[70px] sticky mb-96", className)}>
+    <div className={cn("top-[70px] sticky mb-72", className)}>
       <BoxReveal width="100%">
         <h2
           className={cn(
-            "text-4xl text-center md:text-7xl font-bold",
+            "text-4xl text-center md:text-6xl font-bold",
             "text-foreground"
           )}
         >

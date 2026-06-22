@@ -50,7 +50,7 @@ const ExperienceCard = ({
 }) => {
   return (
     <motion.div
-      className="sticky top-40 md:top-52 max-w-3xl"
+      className="sticky top-40 md:top-52 max-w-1.5xl"
       style={{
         zIndex: index + 1,
         paddingTop: index === 0 ? 0 : index * 95,

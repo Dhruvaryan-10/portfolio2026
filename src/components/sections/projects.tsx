@@ -136,7 +136,7 @@ const ProjectCard = ({ project, isDesktop }: ProjectCardProps) => {
         "flex-shrink-0"
       )}
       style={{
-        width: "min(90vw, 38rem)",
+        width: "min(90vw, 32rem)",
         maxWidth: isDesktop ? "calc(100vw - 2rem)" : "calc(100vw - 4rem)",
         minWidth: "260px",
         flex: "1 0 auto",
@@ -147,7 +147,7 @@ const ProjectCard = ({ project, isDesktop }: ProjectCardProps) => {
         ref={cardRef}
         className={cn(
           "relative p-6 flex flex-col justify-between max-w-full rounded-3xl",
-          "h-[22rem] sm:h-[24rem] md:h-[28rem]",
+          "h-[18rem] sm:h-[20rem] md:h-[24rem]",
           "shadow-lg transition-transform duration-300 hover:-translate-y-2",
           "[transform-style:preserve-3d] [transform:perspective(1000px)] overflow-hidden"
         )}
@@ -166,7 +166,7 @@ const ProjectCard = ({ project, isDesktop }: ProjectCardProps) => {
           alt={project.name}
           className={cn(
             "absolute rounded-2xl shadow-2xl object-cover",
-            "w-[18rem] sm:w-[22rem] md:w-[28rem]",
+            "w-[14rem] sm:w-[18rem] md:w-[22rem]",
             "rotate-[-18deg]",
             "z-0"
           )}
