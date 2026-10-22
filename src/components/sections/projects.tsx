@@ -3,7 +3,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, X } from "lucide-react";
+import { ArrowUpRight, ExternalLink, X } from "lucide-react";
+import { SiGithub } from "react-icons/si";
 import { AnimatePresence, motion } from "framer-motion";
 import { SectionHeader } from "./section-header";
 import { cn } from "@/lib/utils";
@@ -160,15 +161,12 @@ const ProjectCard = ({ project }: { project: Project }) => {
       onMouseEnter={project.preview ? play : undefined}
       onMouseLeave={project.preview ? stop : undefined}
     >
-      <Link
-        href={`/projects/${project.slug}`}
-        onFocus={project.preview ? play : undefined}
-        onBlur={project.preview ? stop : undefined}
+      <div
         className={cn(
           "group relative flex h-full flex-col overflow-hidden rounded-2xl",
           "border border-border/70 bg-card/80 backdrop-blur-md",
           "transition-all duration-300 hover:-translate-y-1 hover:border-foreground/25 hover:shadow-2xl",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          "focus-within:ring-2 focus-within:ring-ring"
         )}
       >
         <div className="relative aspect-[16/10] overflow-hidden bg-black">
@@ -273,8 +271,44 @@ const ProjectCard = ({ project }: { project: Project }) => {
               </span>
             )}
           </div>
+
+          {(project.github || project.live) && (
+            <div className="relative z-20 flex flex-wrap gap-2 border-t border-border/60 pt-3">
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${project.name} source code on GitHub`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
+                >
+                  <SiGithub size={13} /> Code
+                </a>
+              )}
+              {project.live && (
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${project.name} live ${project.live.includes("linkedin.com") ? "demo video" : "site"}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
+                >
+                  <ExternalLink size={13} /> {project.live.includes("linkedin.com") ? "Demo video" : "Live site"}
+                </a>
+              )}
+            </div>
+          )}
         </div>
-      </Link>
+
+        {/* Whole card opens the case study; the Code / Live buttons sit above this layer */}
+        <Link
+          href={`/projects/${project.slug}`}
+          aria-label={`${project.name} case study`}
+          onFocus={project.preview ? play : undefined}
+          onBlur={project.preview ? stop : undefined}
+          className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none"
+        />
+      </div>
     </motion.div>
   );
 };
