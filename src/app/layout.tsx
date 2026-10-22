@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   keywords: config.keywords,
   authors: [{ name: config.author }],
   metadataBase: new URL(config.site),
-  applicationName: config.title,
+  applicationName: config.author,
   openGraph: {
     title: config.title,
     description: config.description.short,
@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     images: [
       {
         url: config.ogImg,
-        width: 800,
-        height: 600,
-        alt: "Portfolio preview",
+        width: 1200,
+        height: 630,
+        alt: `${config.author} portfolio`,
       },
     ],
     type: "website",
@@ -74,13 +74,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={[inter.variable, archivoBlack.variable, "font-display"].join(" ")} suppressHydrationWarning>
+    <html lang="en" className={[inter.variable, archivoBlack.variable, "font-sans"].join(" ")} suppressHydrationWarning>
       <head>
-        <Script
-          defer
-          src={process.env.UMAMI_DOMAIN}
-          data-website-id={process.env.UMAMI_SITE_ID}
-        ></Script>
+        {process.env.UMAMI_DOMAIN && (
+          <Script
+            defer
+            src={process.env.UMAMI_DOMAIN}
+            data-website-id={process.env.UMAMI_SITE_ID}
+          ></Script>
+        )}
         <Script
           id="ld-json-site"
           type="application/ld+json"

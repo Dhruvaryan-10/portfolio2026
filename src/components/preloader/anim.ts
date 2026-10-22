@@ -8,12 +8,13 @@ export const opacity = {
   }
 };
 
+// Animate with transform (not "top") so the exit doesn't count as layout shift
 export const slideUp = {
   initial: {
-    top: 0
+    y: 0
   },
   exit: {
-    top: '-100dvh',
+    y: '-100%',
     transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }
   }
 };

@@ -1,226 +1,281 @@
 "use client";
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { SectionHeader } from "./section-header";
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { PROJECTS } from "@/data/projects";
+import {
+  PROJECTS,
+  PROJECT_CATEGORIES,
+  type Project,
+  type ProjectCategory,
+} from "@/data/projects";
+import { SKILL_EVENT, projectsForSkill } from "@/data/skill-projects";
+import { useView } from "@/hooks/use-view";
 
-const tiltOptions = {
-  max: 5,
-  speed: 400,
-  glare: true,
-  "max-glare": 0.2,
-  gyroscope: false,
-};
+type Filter = "All" | ProjectCategory;
 
 const ProjectsSection = () => {
-  const [isDesktop, setIsDesktop] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const [filter, setFilter] = useState<Filter>("All");
+  const [skill, setSkill] = useState<string | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const view = useView();
 
+  // A keycap click (or a skill chip) filters the grid to that skill
   useEffect(() => {
-    const media = window.matchMedia("(min-width: 768px)");
-    const handler = (e: MediaQueryListEvent | MediaQueryList) =>
-      setIsDesktop(
-        e instanceof MediaQueryListEvent ? e.matches : media.matches
-      );
-    handler(media);
-    media.addEventListener("change", handler);
-    return () => media.removeEventListener("change", handler);
+    const onSkill = (e: Event) => {
+      const label = (e as CustomEvent<string>).detail;
+      setSkill(label);
+      setFilter("All");
+      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    window.addEventListener(SKILL_EVENT, onSkill);
+    return () => window.removeEventListener(SKILL_EVENT, onSkill);
   }, []);
 
-  useLayoutEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      const setup = () => {
-        const section = sectionRef.current;
-        const track = trackRef.current;
-        if (!section || !track) return;
+  // Tailored links (?for=ai) put the most relevant projects first
+  const ordered = useMemo(() => {
+    if (!view) return PROJECTS;
+    const rank = (slug: string) => {
+      const i = view.order.indexOf(slug);
+      return i === -1 ? 999 : i;
+    };
+    return [...PROJECTS].sort((a, b) => rank(a.slug) - rank(b.slug));
+  }, [view]);
 
-        const distance = track.scrollWidth - section.clientWidth;
-        ScrollTrigger.getById("projects-horizontal")?.kill();
-        gsap.set(track, { x: 0 });
-        if (distance <= 0) return;
+  const visible = useMemo(() => {
+    let list = skill ? projectsForSkill(skill, ordered) : ordered;
+    if (filter !== "All") list = list.filter((p) => p.categories.includes(filter));
+    return list;
+  }, [filter, skill, ordered]);
 
-        gsap.to(track, {
-          x: -distance,
-          ease: "none",
-          scrollTrigger: {
-            id: "projects-horizontal",
-            trigger: section,
-            start: "top 30%",
-            end: () => `+=${distance + window.innerHeight}`,
-            scrub: true,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-      };
-
-      setup();
-      ScrollTrigger.addEventListener("refreshInit", setup);
-
-      return () => {
-        ScrollTrigger.removeEventListener("refreshInit", setup);
-        ScrollTrigger.getById("projects-horizontal")?.kill();
-      };
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  const counts = useMemo(() => {
+    const base = skill ? projectsForSkill(skill, ordered) : ordered;
+    const c: Record<string, number> = { All: base.length };
+    PROJECT_CATEGORIES.forEach(
+      (cat) => (c[cat] = base.filter((p) => p.categories.includes(cat)).length)
+    );
+    return c;
+  }, [skill, ordered]);
 
   return (
     <section
       id="projects"
-      className="relative max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24"
+      ref={sectionRef}
+      className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24 scroll-mt-16"
     >
       <SectionHeader
         id="projects"
         title="Projects"
-        desc="Quick hits from my 69+ build lists."
+        desc="Products, research and competition work. Open any card for the full case study."
+        className="mb-10 md:mb-12 static"
       />
-      <div
-        ref={sectionRef}
-        className="mt-10 overflow-x-hidden w-screen max-w-none -mx-[calc(50vw-50%)]"
-      >
-        <div
-          ref={trackRef}
-          className="flex gap-8 overflow-visible pb-6 snap-x snap-mandatory w-max"
-        >
-          {PROJECTS.map((project) => (
-            <ProjectCard
-              key={project.name}
-              project={project}
-              isDesktop={isDesktop}
-            />
-          ))}
-        </div>
+
+      <div className="mb-10 flex flex-wrap items-center justify-center gap-2">
+        {(["All", ...PROJECT_CATEGORIES] as Filter[]).map((f) => (
+          <button
+            key={f}
+            type="button"
+            aria-pressed={filter === f}
+            onClick={() => setFilter(f)}
+            disabled={counts[f] === 0 && f !== "All"}
+            className={cn(
+              "rounded-full border px-4 py-1.5 text-sm transition-colors disabled:opacity-40",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              filter === f
+                ? "border-foreground bg-foreground text-background"
+                : "border-border bg-background/40 text-muted-foreground backdrop-blur hover:text-foreground"
+            )}
+          >
+            {f}
+            <span className="ml-1.5 tabular-nums opacity-60">{counts[f]}</span>
+          </button>
+        ))}
+
+        {skill && (
+          <button
+            type="button"
+            onClick={() => setSkill(null)}
+            className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/60 bg-emerald-400/10 px-3 py-1.5 text-sm text-emerald-300 transition-colors hover:bg-emerald-400/20"
+            aria-label={`Clear ${skill} filter`}
+          >
+            Built with {skill}
+            <X size={14} />
+          </button>
+        )}
       </div>
+
+      {visible.length === 0 ? (
+        <p className="mx-auto max-w-md rounded-2xl border border-border bg-card/70 p-6 text-center text-sm text-muted-foreground backdrop-blur">
+          None of the projects shown here are tagged with {skill}.{" "}
+          <button
+            type="button"
+            onClick={() => setSkill(null)}
+            className="text-foreground underline underline-offset-4"
+          >
+            Show all projects
+          </button>
+        </p>
+      ) : (
+        <motion.div layout className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout">
+            {visible.map((project) => (
+              <ProjectCard key={project.slug} project={project} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      )}
     </section>
   );
 };
 
-type ProjectCardProps = {
-  project: (typeof PROJECTS)[number];
-  isDesktop: boolean;
-};
+const ProjectCard = ({ project }: { project: Project }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
 
-const imageExtensions: Record<string, string> = {
-  jiniz: "jpg",
-};
-
-const ProjectCard = ({ project, isDesktop }: ProjectCardProps) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!cardRef.current) return;
-    import("vanilla-tilt").then(({ default: VanillaTilt }: any) => {
-      VanillaTilt.init(cardRef.current, tiltOptions);
-    });
-  }, []);
-
-  const imageSrc = `/assets/projects-screenshots/${project.imageKey}.${imageExtensions[project.imageKey] ?? "png"
-    }`;
+  const play = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    v.currentTime = 0;
+    v.play()
+      .then(() => setPlaying(true))
+      .catch(() => setPlaying(false));
+  };
+  const stop = () => {
+    videoRef.current?.pause();
+    setPlaying(false);
+  };
 
   return (
-    <a
-      href={project.url}
-      target="_blank"
-      rel="noreferrer"
-      className={cn(
-        "overflow-hidden rounded-3xl snap-start link",
-        "flex-shrink-0"
-      )}
-      style={{
-        width: "min(90vw, 32rem)",
-        maxWidth: isDesktop ? "calc(100vw - 2rem)" : "calc(100vw - 4rem)",
-        minWidth: "260px",
-        flex: "1 0 auto",
-        WebkitMaskImage: "-webkit-radial-gradient(white, black)",
-      }}
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      onMouseEnter={project.preview ? play : undefined}
+      onMouseLeave={project.preview ? stop : undefined}
     >
-      <div
-        ref={cardRef}
+      <Link
+        href={`/projects/${project.slug}`}
+        onFocus={project.preview ? play : undefined}
+        onBlur={project.preview ? stop : undefined}
         className={cn(
-          "relative p-6 flex flex-col justify-between max-w-full rounded-3xl",
-          "h-[18rem] sm:h-[20rem] md:h-[24rem]",
-          "shadow-lg transition-transform duration-300 hover:-translate-y-2",
-          "[transform-style:preserve-3d] [transform:perspective(1000px)] overflow-hidden"
+          "group relative flex h-full flex-col overflow-hidden rounded-2xl",
+          "border border-border/70 bg-card/80 backdrop-blur-md",
+          "transition-all duration-300 hover:-translate-y-1 hover:border-foreground/25 hover:shadow-2xl",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         )}
-        style={{
-          background: `linear-gradient(90deg, ${project.gradient[0]} 0%, ${project.gradient[1]} 100%)`,
-        }}
       >
-        <Image
-          src="/assets/project-bg.svg"
-          alt="project"
-          className="absolute top-0 left-0 w-full h-full opacity-20 rounded-3xl object-cover pointer-events-none"
-          fill
-        />
-        <Image
-          src={imageSrc}
-          alt={project.name}
-          className={cn(
-            "absolute rounded-2xl shadow-2xl object-cover",
-            "w-[14rem] sm:w-[18rem] md:w-[22rem]",
-            "rotate-[-18deg]",
-            "z-0"
+        <div className="relative aspect-[16/10] overflow-hidden bg-black">
+          <Image
+            src={project.cover}
+            alt={`${project.name} preview`}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          />
+          {project.preview && (
+            <video
+              ref={videoRef}
+              muted
+              loop
+              playsInline
+              preload="none"
+              aria-hidden
+              className={cn(
+                "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
+                playing ? "opacity-100" : "opacity-0"
+              )}
+            >
+              <source src={project.preview.replace(/\.mp4$/, ".webm")} type="video/webm" />
+              <source src={project.preview} type="video/mp4" />
+            </video>
           )}
-          sizes="(min-width: 1024px) 450px, (min-width: 640px) 350px, 280px"
-          priority={false}
-          style={{
-            right: "-3rem",
-            top: "1rem",
-          }}
-          width={1600}
-          height={900}
-        />
-        {!isDesktop && (
           <div
-            className="absolute bottom-0 left-0 w-full h-20"
+            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-60"
             style={{
-              background: `linear-gradient(0deg, ${project.gradient[0]} 10%, rgba(0,0,0,0) 100%)`,
+              background: `radial-gradient(120% 70% at 50% 130%, ${project.accent} 0%, transparent 60%)`,
             }}
           />
-        )}
-        <h1
-          className="z-10 text-xl font-medium sm:text-2xl text-white"
-          style={{ transform: "translateZ(3rem)" }}
-        >
-          {project.name}
-        </h1>
-        <div
-          className={cn(
-            "w-1/2 h-full absolute left-24 top-0 sm:flex items-center hidden",
-            "rotate-[-22.5deg]"
-          )}
-          style={{ transform: "rotate(-22.5deg) translateZ(3rem)" }}
-        >
-          <div className="flex flex-col pb-8">
-            {project.tech.map((el, i) => (
-              <Image
-                className={`${i % 2 === 0 && "ml-16"} mb-4`}
-                src={`/assets/tech/${el}.svg`}
-                alt={el}
-                height={45}
-                width={45}
-                key={el}
-              />
+          <span className="absolute right-3 top-3 rounded-full bg-black/65 px-2.5 py-1 font-sans text-[11px] font-medium tabular-nums text-white/80 backdrop-blur">
+            {project.year}
+          </span>
+          <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+            {project.categories.map((c) => (
+              <span
+                key={c}
+                className="rounded-full bg-black/65 px-2.5 py-1 text-[11px] font-medium text-white/90 backdrop-blur"
+              >
+                {c}
+              </span>
             ))}
           </div>
+          {project.preview && !playing && (
+            <span className="absolute bottom-3 right-3 rounded-full bg-black/65 px-2.5 py-1 text-[11px] text-white/80 backdrop-blur">
+              ▶ Hover to preview
+            </span>
+          )}
         </div>
-        <h2
-          className="z-10 text-sm font-normal tracking-wide text-white"
-          style={{ transform: "translateZ(0.8rem)" }}
-        >
-          {project.description}
-        </h2>
-      </div>
-    </a>
+
+        <div className="flex flex-1 flex-col gap-3 p-5">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="text-lg font-semibold leading-snug text-foreground">
+                {project.name}
+              </h3>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                {project.tagline}
+              </p>
+            </div>
+            <span
+              aria-hidden
+              className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors group-hover:bg-foreground group-hover:text-background"
+            >
+              <ArrowUpRight size={16} />
+            </span>
+          </div>
+
+          {project.stats && project.stats.length > 0 && (
+            <div className="flex gap-6">
+              {project.stats.slice(0, 2).map((s) => (
+                <div key={s.label}>
+                  <div
+                    className="text-base font-semibold tabular-nums"
+                    style={{ color: project.accent }}
+                  >
+                    {s.value}
+                  </div>
+                  <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-2">
+            {project.tech.slice(0, 4).map((t) => (
+              <span
+                key={t}
+                className="rounded-md border border-border/80 bg-secondary/40 px-2 py-0.5 text-xs text-muted-foreground"
+              >
+                {t}
+              </span>
+            ))}
+            {project.tech.length > 4 && (
+              <span className="px-1 text-xs text-muted-foreground">
+                +{project.tech.length - 4}
+              </span>
+            )}
+          </div>
+        </div>
+      </Link>
+    </motion.div>
   );
 };
 

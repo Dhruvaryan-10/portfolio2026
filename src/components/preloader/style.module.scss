@@ -7,6 +7,8 @@
   padding-inline: 20px;
   padding-bottom: 10px;
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 99;
   // TODO: Add a better color instead of just the background to make it pop more
   background-color: hsl(var(--background));
@@ -26,5 +28,11 @@
     align-items: center;
     position: absolute;
     z-index: 1;
+  }
+}
+// Phones skip the intro entirely (also before JavaScript loads)
+@media (max-width: 767px) {
+  .introduction {
+    display: none;
   }
 }

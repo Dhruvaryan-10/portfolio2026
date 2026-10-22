@@ -48,7 +48,7 @@ const Header = ({ loader }: HeaderProps) => {
       </div> */}
       <div className={cn(styles.bar, "flex items-center justify-between")}>
         <Link href="/" className="flex items-center justify-center">
-          <Button variant={"link"} className="text-md">
+          <Button variant={"link"} className="text-md font-display">
             {config.author}
           </Button>
         </Link>

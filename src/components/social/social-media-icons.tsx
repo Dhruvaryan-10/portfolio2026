@@ -3,7 +3,7 @@
 import { useInView } from "framer-motion";
 import React, { useRef } from "react";
 import { Button } from "../ui/button";
-import { SiGithub, SiLinkedin } from "react-icons/si";
+import { SiGithub, SiLeetcode, SiLinkedin } from "react-icons/si";
 import { config } from "@/data/config";
 import { Mail } from "lucide-react";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import Link from "next/link";
 const BUTTONS = [
   {
     name: "Email",
-    href: "mailto:[chughdhruvaryan@gmail.com]",
+    href: `mailto:${config.email}`,
     icon: <Mail size={24} />,
   },
   {
@@ -24,6 +24,11 @@ const BUTTONS = [
     href: config.social.linkedin,
     icon: <SiLinkedin size={24} color="#fff" />,
   },
+  {
+    name: "LeetCode",
+    href: config.social.leetcode,
+    icon: <SiLeetcode size={24} color="#fff" />,
+  },
 ];
 
 const SocialMediaButtons = () => {
@@ -34,8 +39,8 @@ const SocialMediaButtons = () => {
     <div ref={ref} className="z-10">
       {show &&
         BUTTONS.map((button) => (
-          <Link href={button.href} key={button.name} target="_blank">
-            <Button variant={"ghost"}>{button.icon}</Button>
+          <Link href={button.href} key={button.name} target="_blank" aria-label={button.name}>
+            <Button variant={"ghost"} tabIndex={-1}>{button.icon}</Button>
           </Link>
         ))}
     </div>

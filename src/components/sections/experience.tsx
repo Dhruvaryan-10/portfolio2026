@@ -74,7 +74,7 @@ const ExperienceCard = ({
         <CardHeader className="pb-3">
           <div className="flex flex-row items-start justify-between gap-4">
             <div className="space-y-1">
-              <CardTitle className="text-xl font-bold tracking-tight">
+              <CardTitle className="font-display text-xl font-normal tracking-tight">
                 {experience.title}
               </CardTitle>
               <div className="text-base font-medium text-muted-foreground">

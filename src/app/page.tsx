@@ -9,12 +9,17 @@ import ExperienceSection from "@/components/sections/experience";
 import ProjectsSection from "@/components/sections/projects";
 import ContactSection from "@/components/sections/contact";
 import HeroSection from "@/components/sections/hero";
+import Testimonials from "@/components/sections/testimonials";
 import Script from "next/script";
 import { config } from "@/data/config";
 import { SkillProvider } from "@/context/skill-context";
 import SkillInfoCard from "@/components/skill-info-card";
+import SceneErrorBoundary from "@/components/scene-error-boundary";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 function MainPage() {
+  // The 3D keyboard only loads on tablets and desktops; phones get a lighter page.
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
     <SkillProvider>
       <SmoothScroll>
@@ -41,13 +46,18 @@ function MainPage() {
           }),
         }}
       />
-      <AnimatedBackground />
+      {isDesktop && (
+        <SceneErrorBoundary>
+          <AnimatedBackground />
+        </SceneErrorBoundary>
+      )}
       <SkillInfoCard />
       <main className={cn("bg-slate-100 dark:bg-transparent canvas-overlay-mode")}>
         <HeroSection />
         <SkillsSection />
         <ExperienceSection />
         <ProjectsSection />
+        <Testimonials />
         <ContactSection />
       </main>
       </SmoothScroll>

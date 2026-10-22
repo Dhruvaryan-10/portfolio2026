@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { Section, getKeyboardState } from "./animated-background-config";
 import { useSounds } from "@/hooks/use-sounds";
 import { useSkillContext } from "@/context/skill-context";
+import { selectSkill } from "@/data/skill-projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -94,6 +95,11 @@ const AnimatedBackground = () => {
       }
     });
     splineApp.addEventListener("mouseHover", handleMouseHover);
+    // Clicking a keycap shows the projects built with that skill
+    splineApp.addEventListener("mouseDown", (e) => {
+      const skill = SKILLS[e.target.name as SkillNames];
+      if (skill) selectSkill(skill.label);
+    });
   };
 
   // --- Animation Setup Helpers ---
@@ -434,7 +440,7 @@ const AnimatedBackground = () => {
   }, [splineApp, isLoading, activeSection]);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={null}>
       <Spline
         className="w-full h-full fixed"
         ref={splineContainer}

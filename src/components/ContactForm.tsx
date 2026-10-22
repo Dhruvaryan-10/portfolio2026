@@ -7,7 +7,7 @@ import { Textarea } from "./ui/ace-textarea";
 import { cn } from "@/lib/utils";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
+import { config } from "@/data/config";
 
 const EMAILJS_USER_ID = process.env.NEXT_PUBLIC_USER_ID;
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID;
@@ -20,24 +20,22 @@ const ContactForm = () => {
   const [loading, setLoading] = React.useState(false);
 
   const { toast } = useToast();
-  const router = useRouter();
+
+  const [honey, setHoney] = React.useState(""); // spam trap, hidden from people
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (honey) return; // a bot filled the hidden field
     setLoading(true);
 
-    if (!EMAILJS_USER_ID || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
-      toast({
-        title: "Configuration error",
-        description: "Email service is not configured correctly.",
-        variant: "destructive",
-        className: cn("top-0 mx-auto fixed"),
-      });
-      setLoading(false);
-      return;
-    }
+    // Last resort: open the visitor's email app with the message ready
+    const openMailApp = () => {
+      const subject = encodeURIComponent(`Portfolio enquiry from ${fullName}`);
+      const body = encodeURIComponent(`${message}\n\n${fullName}\n${email}`);
+      window.location.href = `mailto:${config.email}?subject=${subject}&body=${body}`;
+    };
 
-    try {
+    const sendWithEmailJS = async () => {
       const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -45,45 +43,72 @@ const ContactForm = () => {
           service_id: EMAILJS_SERVICE_ID,
           template_id: EMAILJS_TEMPLATE_ID,
           user_id: EMAILJS_USER_ID,
-          template_params: {
-            from_name: fullName,
-            reply_to: email,
-            message,
-          },
+          template_params: { from_name: fullName, reply_to: email, message },
         }),
       });
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText || "Failed to send message");
+      if (!res.ok) throw new Error(await res.text());
+    };
+
+    // FormSubmit.co forwards the message to config.email. No account or key:
+    // the very first message sends an "Activate form" email to that inbox,
+    // which must be clicked once. After that every message is delivered.
+    const sendWithFormSubmit = async () => {
+      const res = await fetch(`https://formsubmit.co/ajax/${config.contactFormId || config.email}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: fullName,
+          email,
+          message,
+          _subject: `Portfolio message from ${fullName}`,
+          _replyto: email,
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || String(data.success) !== "true") {
+        throw new Error(data.message || `FormSubmit ${res.status}`);
+      }
+    };
+
+    try {
+      if (EMAILJS_USER_ID && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID) {
+        await sendWithEmailJS();
+      } else {
+        await sendWithFormSubmit();
       }
       toast({
-        title: "Thank you!",
-        description: "I'll get back to you as soon as possible.",
-        variant: "default",
+        title: "Message sent",
+        description: "Thanks! I'll reply to the email address you gave.",
         className: cn("top-0 mx-auto fixed"),
       });
-      setLoading(false);
       setFullName("");
       setEmail("");
       setMessage("");
-      const timer = setTimeout(() => {
-        router.push("/");
-        clearTimeout(timer);
-      }, 1000);
     } catch (err) {
+      console.error("Contact form failed:", err);
+      openMailApp();
       toast({
-        title: "Error",
-        description: "Something went wrong! Please check the fields.",
-        className: cn(
-          "top-0 w-full mx-auto"
-        ),
-        variant: "destructive",
+        title: "Opening your email app",
+        description: `The form couldn't send, so your email app has the message ready. Or write to ${config.email}.`,
+        className: cn("top-0 w-full mx-auto"),
       });
     }
     setLoading(false);
   };
   return (
     <form className="min-w-7xl mx-auto sm:mt-4" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        name="_honey"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+        value={honey}
+        onChange={(e) => setHoney(e.target.value)}
+        className="hidden"
+      />
       <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
         <LabelInputContainer>
           <Label htmlFor="fullname">Full name</Label>
@@ -111,14 +136,14 @@ const ContactForm = () => {
       <div className="grid w-full gap-1.5 mb-4">
         <Label htmlFor="content">Your Message</Label>
         <Textarea
-          placeholder="Tell me about about your project,"
+          placeholder="Tell me about the role or project"
           id="content"
           required
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
         <p className="text-sm text-muted-foreground">
-          I&apos;ll never share your data with anyone else. Pinky promise!
+          Your details are only used to reply to you.
         </p>
       </div>
       <Button

@@ -22,15 +22,16 @@ import {
   SiPostgresql,
   SiSqlite,
   SiTensorflow,
-  SiPytorch,
   SiPandas,
   SiNumpy,
   SiFigma,
   SiArduino,
   SiUnity,
   SiCplusplus,
+  SiLeetcode,
 } from "react-icons/si";
 import { TbBrandMysql } from "react-icons/tb";
+import { Brain } from "lucide-react";
 // @ts-ignore
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 // @ts-ignore
@@ -57,6 +58,12 @@ const CONTACT_LINKS = [
     content: "/Dhruvaryan-10",
     icon: <FaGithub />,
   },
+  {
+    name: "LeetCode",
+    href: "https://leetcode.com/u/Dhruvaryan_Chugh/",
+    content: "/Dhruvaryan_Chugh",
+    icon: <SiLeetcode />,
+  },
 ];
 
 const TOOLS = [
@@ -76,8 +83,9 @@ const TOOLS = [
   { name: "PostgreSQL", content: "Relational DB for production systems.", icon: <SiPostgresql size={50} color="#336791" /> },
   { name: "SQLite", content: "Lightweight DB for embedded projects.", icon: <SiSqlite size={50} color="#003b57" /> },
   { name: "Machine Learning", content: "Building predictive models that learn.", icon: <SiTensorflow size={50} color="#ff6f00" /> },
-  { name: "AI", content: "Designing intelligent adaptive systems.", icon: <SiPytorch size={50} color="#ee4c2c" /> },
-  { name: "Power BI", content: "Visual analytics and BI dashboards.", icon: <img src="https://img.icons8.com/color/96/power-bi.png" alt="Power BI" width={50} height={50} /> },
+  { name: "LLM Agents", content: "Tool-using agents with humans in the loop.", icon: <Brain size={50} color="#a78bfa" /> },
+  { name: "LightGBM", content: "Gradient boosting for tabular ML.", icon: <SiTensorflow size={50} color="#9be15d" /> },
+  { name: "Power BI", content: "Visual analytics and BI dashboards.", icon: <img src="/assets/tech/powerbi.svg" alt="" width={50} height={50} /> },
   { name: "Pandas", content: "Data wrangling and analysis at scale.", icon: <SiPandas size={50} color="#150458" /> },
   { name: "NumPy", content: "Numerical computing foundation.", icon: <SiNumpy size={50} color="#013243" /> },
   { name: "Git", content: "Version control and collaboration.", icon: <FaGit size={50} color="#f1502f" /> },
@@ -135,7 +143,7 @@ function Page() {
               <div className="flex flex-col gap-2 items-center text-center sm:items-start sm:text-left xl:items-center xl:text-center">
                 <p className="text-lg sm:text-xl md:text-2xl">Dhruvaryan Chugh</p>
                 <div className="text-[11px] sm:text-xs bg-zinc-700 w-fit px-3 py-1 rounded-full">
-                  AI Engineer &amp; Data Analyst
+                  AI Engineer &amp; Full-Stack Developer
                 </div>
               </div>
             </div>
@@ -168,17 +176,20 @@ function Page() {
         <main className="w-full xl:max-w-2/3 xl:col-span-2 xl:justify-self-end">
           <div className="p-4 sm:p-6 lg:p-8 border border-zinc-700/70 rounded-2xl bg-gradient-to-b from-zinc-900/70 via-black/50 to-black/30 backdrop-blur-md shadow-lg space-y-6 sm:space-y-8">
             <div className="space-y-4 sm:space-y-6">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl">About me</h1>
+              <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl">About me</h1>
               <p className="leading-relaxed text-sm sm:text-base text-zinc-200">
-                Hey! I&apos;m Dhruvaryan, a Computer Science undergrad at SRM Institute of Technology passionate about building intelligent systems and data-driven solutions. My work sits at the intersection of AI, full-stack development, and digital twin technology — from training ML models and designing Power BI dashboards to shipping production web apps.
+                I&apos;m Dhruvaryan, a final-year Computer Science student (AI/ML specialisation, GPA 9.34) at SRM Institute of Science and Technology. I build products end to end: the model or data pipeline underneath, and the interface people actually use.
               </p>
               <p className="leading-relaxed text-sm sm:text-base text-zinc-200">
-                Outside of coding, I&apos;m exploring new research papers, experimenting with Unity simulations, or going down rabbit holes in competitive programming. I believe the best software solves real problems elegantly — and I&apos;m always looking for the next one to crack.
+                Recent work includes an agent pipeline that turns a Statement of Work into a full set of delivery documents, a site that explains Indian mutual funds with 13 years of real data, and an entity-resolution model for the Amazon ML Challenge that reached 0.964 F0.5. Before that I interned in data analytics at GIZ India and in front-end engineering at BrainMint.
+              </p>
+              <p className="leading-relaxed text-sm sm:text-base text-zinc-200">
+                I care about software that is honest with its users: explainable predictions, numbers you can trace to a source, and interfaces that make complex things simple.
               </p>
             </div>
 
             <div className="space-y-4 sm:space-y-6">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl">Stuff I use</h2>
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl">Stuff I use</h2>
               <div>
                 {!toolsLoaded ? (
                   <div className="h-[120px] bg-zinc-800/40 rounded-lg animate-pulse" />
@@ -219,6 +230,33 @@ function Page() {
                   </Splide>
                 )}
               </div>
+            </div>
+
+            <div className="space-y-4" id="now">
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl">Now</h2>
+              <ul className="space-y-2 text-sm sm:text-base text-zinc-200">
+                {config.now.map((n) => (
+                  <li key={n} className="flex gap-3">
+                    <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
+                    {n}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-4 scroll-mt-24" id="certifications">
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl">Certifications</h2>
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {config.certifications.map((c) => (
+                  <li
+                    key={c.name}
+                    className="flex items-start justify-between gap-3 rounded-xl border border-zinc-700 bg-zinc-800/60 p-4 text-sm"
+                  >
+                    <span className="text-zinc-100">{c.name}</span>
+                    <span className="shrink-0 text-xs text-zinc-500">{c.year}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </main>

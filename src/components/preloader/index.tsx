@@ -36,7 +36,7 @@ export const usePreloader = () => {
   }
   return context;
 };
-const LOADING_TIME = 2.5;
+const LOADING_TIME = 1.4;
 function Preloader({ children, disabled = false }: PreloaderProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingPercent, setLoadingPercent] = useState(0);
@@ -50,6 +50,12 @@ function Preloader({ children, disabled = false }: PreloaderProps) {
   };
   const loadingPercentRef = useRef<{ value: number }>({ value: 0 });
   useEffect(() => {
+    // Phones skip the intro so content shows as fast as possible
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      setLoadingPercent(100);
+      setIsLoading(false);
+      return;
+    }
     loadingTween.current = gsap.to(loadingPercentRef.current, {
       value: 100,
       duration: LOADING_TIME,

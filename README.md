@@ -1,63 +1,55 @@
-# 3D Portfolio
+# Dhruvaryan Chugh — Portfolio
 
-Welcome to my playground of pixels, keys, and scroll-triggered chaos. This portfolio mixes Spline 3D, GSAP motion, and a pile of React/Tailwind goodness to show off projects, experience, and tools—without feeling like a resume template. Dive in, poke the keyboard, spam the scroll wheel (gently), and enjoy the ride. Cookies not included, but good vibes are. If something looks broken, it might just be “experimental art.”
+Live: https://portfoliodac.vercel.app
 
-## 🔥 Features
+Personal portfolio built with Next.js 14, TypeScript, Tailwind CSS, GSAP, Framer Motion and a Spline 3D keyboard. Each project has its own case-study page at `/projects/<slug>`.
 
-Here are the loud highlights of this playground:
-
-- 🎹 **3D Interactive Animations**: Custom Spline keyboard; every keycap maps to a skill and pops titles/descriptions on hover.
-- ✨ **Slick Interactions & Animations**: GSAP + Framer Motion for buttery scroll pins, hover reveals, and scene transitions.
-- 🚀 **Horizontal Project Reel**: Pinned-on-scroll carousel with tilt and glow; snaps nicely on touch for mobile.
-- 🧊 **Stacking Experience Cards**: Layered timeline that sticks and stacks as you scroll—no jitter, just vibes.
-- 🌙 **Theme + Fun Overlays**: Playful toggles, Lottie “coming soon” dialog for future drops.
-- 📱 **Responsive Everywhere**: Safe-area friendly, `dvh` mindful layouts to avoid toolbar jump scares.
-
-## 🛠️ Tech Stack
-
-- **Framework:** Next.js, TypeScript, React
-- **Styling:** Tailwind CSS, shadcn/ui
-- **Animation:** GSAP (ScrollTrigger), Framer Motion, VanillaTilt
-- **3D:** Spline (`@splinetool/runtime`, `@splinetool/react-spline`)
-- **Extras:** Lottie for playful moments
-
-## Getting Started
+## Run locally
 
 ```bash
 pnpm install
-pnpm dev
-# or
-yarn
-yarn dev
+pnpm dev        # http://localhost:3000
 ```
 
-Then open `http://localhost:3000`.
+## Where to edit content
 
-## Configuration
+| What | File |
+| --- | --- |
+| Name, role line, SEO text, site URL, resume path, social links | `src/data/config.ts` |
+| Projects and case studies | `src/data/projects.ts` |
+| Project images (cover + screens) | `public/assets/projects/<slug>/` |
+| Experience timeline and skills keyboard labels | `src/data/constants.ts` |
+| Footer links | `src/components/footer/config.ts` |
+| Proof badges, availability, Now, certifications, testimonials | `src/data/config.ts` |
+| Writing (articles) | `src/data/writing.ts` |
+| Resume PDF | `public/assets/DAC_Res.pdf` |
 
-- **Skills keyboard:** edit `src/data/constants.ts` (`SKILLS`) to change labels/blurbs. For new icons on the 3D keys, update the Spline scene (`public/assets/skills-keyboard.spline`) to match the skill names.
-- **Projects data:** `src/data/projects.tsx`
-- **Experience data:** `src/data/constants.ts` (`EXPERIENCE`)
-- **Animated background states:** `src/components/animated-background-config.ts`
-- **Footer links:** `src/components/footer/config.ts`
+### Adding a project
 
-## Assets
+1. Create `public/assets/projects/<slug>/` with `cover.webp` (1600×1000) and numbered screenshots (`1.webp`, `2.webp`, …).
+2. Add an entry to `PROJECTS` in `src/data/projects.ts`. The card, filter count, case-study page and sitemap entry are generated from it.
 
-- 3D scene: `public/assets/skills-keyboard.spline`
-- Lottie animations: `public/assets/lottie/`
-- Project screenshots: `public/assets/projects-screenshots/`
-- Tech icons: `public/assets/tech/`
+## Environment variables (Vercel)
 
-## Notes on Responsiveness & Motion
+| Name | Used for |
+| --- | --- |
+| `NEXT_PUBLIC_USER_ID`, `NEXT_PUBLIC_SERVICE_ID`, `NEXT_PUBLIC_TEMPLATE_ID` | EmailJS contact form |
+| `UMAMI_DOMAIN`, `UMAMI_SITE_ID` | Optional Umami analytics |
+| `GEMINI_API_KEY` (optional `GEMINI_MODEL`) | AI answers for the "Ask about me" assistant |
+| or `OPENAI_API_KEY` (optional `OPENAI_MODEL`, `OPENAI_BASE_URL`) | Same, with an OpenAI-compatible API |
 
-- Horizontal projects track only pins on desktop; mobile keeps native scrolling.
-- Experience cards stack with controlled offsets to avoid jitter.
-- Safe-area + `dvh` usage minimizes mobile browser toolbar jumps.
+The assistant (`src/app/api/ask/route.ts`) works without any key: it answers straight from the site's data. With a key it writes answers with the AI model, grounded only in that data, and falls back to the data-only answer if the provider fails. Check which mode is live at `/api/ask`.
 
-## Inspiration
+## Tailored links
 
-This project is inspired by the amazing work of **Naresh Khatri**. His innovative approach to web design and attention to detail has been a huge influence. Thank you, Naresh! 🙏
+Add `?for=ai`, `?for=data` or `?for=fullstack` to the site URL to change the headline and put the most relevant projects first. Edit the views in `src/data/config.ts`.
 
-## Contributing & Stars
+## Notes
 
-If you fork this, remix it, or just vibe with it, toss a ⭐ on the repo—it keeps the electrons happy. PRs are welcome; bring snacks, tests, and well-formatted code.
+- The 3D scene is wrapped in an error boundary, so the site still works if WebGL or the Spline runtime fails to load.
+- `public/sitemap.xml` lists every page; add a line when you add a project.
+- Particles and the custom cursor are turned off when the visitor's system asks for reduced motion.
+
+## Credits
+
+Started from Naresh Khatri's open-source 3D portfolio template; content, project pages and design changes are my own.

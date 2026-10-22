@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// SKILL SYSTEM — Faiq Khokhar Portfolio
+// SKILL SYSTEM
 //
 // CRITICAL ARCHITECTURE NOTE:
 // The `name` field in each Skill object must exactly match the corresponding
@@ -74,7 +74,8 @@ export enum SkillNames {
   NODEJS = "nodejs",      // Spline slot: nodejs
   EXPRESS = "express",     // Spline slot: express
   POSTGRES = "postgres",    // Spline slot: postgres
-  FLASK = "mongodb",     // Spline slot: mongodb
+  FLASK = "__flask",     // metadata-only (the mongodb keycap shows the MongoDB logo)
+  MONGODB = "mongodb",   // Spline slot: mongodb (MongoDB logo)
   GIT = "git",         // Spline slot: git
   GITHUB = "github",      // Spline slot: github
 
@@ -83,12 +84,14 @@ export enum SkillNames {
   AI_SKILL = "npm",         // Spline slot: npm      (visual: ai.svg)
   SQL = "firebase",    // Spline slot: firebase (visual: mysql-svgrepo-com.svg)
   PANDAS = "wordpress",   // Spline slot: wordpress
-  NUMPY = "linux",       // Spline slot: linux
+  NUMPY = "__numpy",     // metadata-only (the linux keycap shows the Linux logo)
+  LINUX = "linux",       // Spline slot: linux (Linux logo)
   DOCKER = "docker",      // Spline slot: docker
   ARDUINO = "nginx",       // Spline slot: nginx    (visual: arduino-svgrepo-com.svg)
   POWERBI = "aws",         // Spline slot: aws      (visual: powerbi.svg)
   SQLITE = "vim",         // Spline slot: vim
-  DATA_ANALYTICS = "vercel",      // Spline slot: vercel
+  DATA_ANALYTICS = "__data_analytics", // metadata-only (the vercel keycap shows the Vercel logo)
+  VERCEL = "vercel",     // Spline slot: vercel (Vercel logo)
 
   // ── Tools (metadata-only) ─────────────────────────────────────────────────
   FIGMA = "__figma",     // metadata-only (no Spline keycap)
@@ -133,7 +136,7 @@ export const SKILLS: Record<SkillNames, Skill> = {
     label: "Python",
     shortDescription: "Primary language for AI, machine learning, automation, and data analysis — every pipeline starts here 🐍",
     color: "#3776ab",
-    icon: "/assets/tech/python-svgrepo-com.svg",
+    icon: "/assets/tech/python.svg",
     category: "Language",
     isPriority: true,
   },
@@ -214,7 +217,7 @@ export const SKILLS: Record<SkillNames, Skill> = {
     label: "Unity",
     shortDescription: "Developing Digital Twin simulations, interactive 3D systems, and real-time visualization platforms 🎮",
     color: "#cccccc",
-    icon: "/assets/tech/unity-svgrepo-com.svg",
+    icon: "/assets/tech/unity.svg",
     category: "Frontend",
     isPriority: true,
   },
@@ -278,10 +281,10 @@ export const SKILLS: Record<SkillNames, Skill> = {
     category: "Backend",
   },
 
-  // mongodb slot → Flask
+  // metadata-only
   [SkillNames.FLASK]: {
     id: 15,
-    name: "mongodb",
+    name: "__flask",
     label: "Flask",
     shortDescription: "Python micro-framework for serving ML model endpoints, healthcare APIs, and lightweight REST services 🧪",
     color: "#ffffff",
@@ -321,7 +324,7 @@ export const SKILLS: Record<SkillNames, Skill> = {
     label: "Machine Learning",
     shortDescription: "Training predictive models, classification systems, recommendation engines, and data-driven solutions 🤖",
     color: "#ff6f00",
-    icon: "/assets/tech/tensorflow-enterprise-svgrepo-com.svg",
+    icon: "/assets/tech/machine-learning.svg",
     category: "AI & Data",
     isPriority: true,
   },
@@ -361,10 +364,10 @@ export const SKILLS: Record<SkillNames, Skill> = {
     category: "AI & Data",
   },
 
-  // linux slot → NumPy
+  // metadata-only
   [SkillNames.NUMPY]: {
     id: 22,
-    name: "linux",
+    name: "__numpy",
     label: "NumPy",
     shortDescription: "Vectorised numerical computing — the mathematical core beneath every ML pipeline and statistical model 🔢",
     color: "#4dabcf",
@@ -391,7 +394,7 @@ export const SKILLS: Record<SkillNames, Skill> = {
     label: "Arduino",
     shortDescription: "Building IoT systems, embedded solutions, sensor integrations, and hardware prototypes 🔌",
     color: "#00979d",
-    icon: "/assets/tech/arduino-svgrepo-com.svg",
+    icon: "/assets/tech/arduino.svg",
     category: "Tools",
     isPriority: true,
   },
@@ -419,15 +422,46 @@ export const SKILLS: Record<SkillNames, Skill> = {
     category: "Backend",
   },
 
-  // vercel slot → Data Analytics
+  // metadata-only
   [SkillNames.DATA_ANALYTICS]: {
     id: 27,
-    name: "vercel",
+    name: "__data_analytics",
     label: "Data Analytics",
     shortDescription: "Converting raw data into strategic decisions — statistical analysis, trend detection, and storytelling with data 📉",
     color: "#00c6b7",
     icon: "https://img.icons8.com/color/96/data-configuration.png",
     category: "AI & Data",
+  },
+
+  // Keycaps whose printed logo is MongoDB, Linux and Vercel: labels now match the logos
+  [SkillNames.MONGODB]: {
+    id: 29,
+    name: "mongodb",
+    label: "MongoDB",
+    shortDescription: "Document database — used in SmartCA's original Flask backend before the move to PostgreSQL 🍃",
+    color: "#47a248",
+    icon: "/assets/tech/mongodb.svg",
+    category: "Backend",
+  },
+
+  [SkillNames.LINUX]: {
+    id: 30,
+    name: "linux",
+    label: "Linux",
+    shortDescription: "Everyday development environment — shell scripting, servers and deployment 🐧",
+    color: "#fcc624",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg",
+    category: "Tools",
+  },
+
+  [SkillNames.VERCEL]: {
+    id: 31,
+    name: "vercel",
+    label: "Vercel",
+    shortDescription: "Where my web projects ship — this portfolio, Fund Reality, SmartCA, Campaign Copilot and more ▲",
+    color: "#ffffff",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg",
+    category: "Tools",
   },
 
   // metadata-only
@@ -437,7 +471,7 @@ export const SKILLS: Record<SkillNames, Skill> = {
     label: "Figma",
     shortDescription: "Prototyping and UX design before a single line of code is written 🎨",
     color: "#f24e1e",
-    icon: "/assets/tech/figma-svgrepo-com.svg",
+    icon: "/assets/tech/figma.svg",
     category: "Tools",
   },
 };
@@ -460,9 +494,9 @@ export const EXPERIENCE: Experience[] = [
     title: "Data Analyst Intern",
     company: "Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ), India",
     description: [
-      "Maintained and enhanced the GIZ India Project Dashboard, ensuring accurate reporting across multiple sectors and regional programs.",
-      "Developed Microsoft Lists-based tracking solutions to improve project visibility, workflow efficiency, and reporting processes.",
-      "Collaborated with cross-functional teams on data analysis, dashboard troubleshooting, and knowledge management initiatives.",
+      "Cut report generation time by 65%, from three days to same-day, by building automated reporting workflows in Microsoft Lists that replaced manual status collection.",
+      "Extracted, cleaned, validated and reconciled data from 4 regional program teams, and built Tableau dashboards and PowerPoint summaries for non-technical stakeholders.",
+      "Maintained the GIZ India Project Dashboard for accurate reporting across sectors and regional programs.",
     ],
     skills: [
       SkillNames.PYTHON,
@@ -480,9 +514,9 @@ export const EXPERIENCE: Experience[] = [
     title: "Frontend Development Engineering Intern",
     company: "BrainMint",
     description: [
-      "Developed reusable React.js components and interactive dashboards for real-time data visualization.",
-      "Optimized frontend performance and reduced application load times through efficient rendering strategies.",
-      "Collaborated with backend teams to integrate telemetry systems and mission-planning workflows.",
+      "Built React.js data visualization interfaces that bring mission telemetry into a single analytics dashboard.",
+      "Cut page load times by 30% through rendering and asset-delivery optimization.",
+      "Integrated telemetry pipelines with backend engineers, standardizing API contracts to eliminate cross-service data mismatches.",
     ],
     skills: [
       SkillNames.REACT,
@@ -495,10 +529,29 @@ export const EXPERIENCE: Experience[] = [
 
   {
     id: 3,
+    startDate: "Jan 2026",
+    endDate: "May 2026",
+    title: "Multi-Omics Drug Sensitivity Prediction",
+    company: "Research Project",
+    description: [
+      "Built a LightGBM pipeline on LINCS L1000 gene expression and GDSC drug-response data that predicts IC50 values (R² 0.51, RMSE 1.96), beating Random Forest, neural network and TabNet baselines.",
+      "Added SHAP explanations and a Streamlit dashboard so predictions can be inspected gene by gene.",
+    ],
+    skills: [
+      SkillNames.PYTHON,
+      SkillNames.ML,
+      SkillNames.AI_SKILL,
+      SkillNames.PANDAS,
+      SkillNames.DATA_ANALYTICS,
+    ],
+  },
+
+  {
+    id: 4,
     startDate: "Jan 2025",
     endDate: "May 2025",
-    title: "Solaris Digital Twin Project",
-    company: "SRM Institute of Technology",
+    title: "Solaris Digital Twin — Project Lead",
+    company: "SRM Institute of Science and Technology",
     description: [
       "Led the development of a real-time digital twin simulation of a self-landing rocket using Unity and Arduino.",
       "Integrated live sensor telemetry using ultrasonic sensors and serial communication pipelines.",
@@ -510,25 +563,6 @@ export const EXPERIENCE: Experience[] = [
       SkillNames.PYTHON,
       SkillNames.REACT,
       SkillNames.NODEJS,
-    ],
-  },
-  {
-    id: 4,
-    startDate: "Jan 2026",
-    endDate: "May 2026",
-    title: "AI-Based Drug Recommendation System Using Multi-Omics Data for Precision Medicine",
-    company: "Research Project",
-    description: [
-      "Developed an AI-driven precision medicine framework that integrates multi-omics biological data to predict drug effectiveness and support personalized treatment selection.",
-      "Built a LightGBM-based machine learning pipeline using LINCS L1000 gene expression data and GDSC drug response datasets to predict IC50 values and rank candidate therapies.",
-      "Implemented SHAP-based explainability and an interactive Streamlit dashboard to visualize drug recommendations, model predictions, and gene-level feature importance for interpretable healthcare decision support.",
-    ],
-    skills: [
-      SkillNames.PYTHON,
-      SkillNames.ML,
-      SkillNames.AI_SKILL,
-      SkillNames.PANDAS,
-      SkillNames.DATA_ANALYTICS,
     ],
   },
 ];

@@ -6,9 +6,11 @@ import { cn } from "@/lib/utils";
 
 interface SectionWrapperProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
+  /** Skip the scroll fade (used for the first screen so it paints immediately) */
+  static?: boolean;
 }
 
-const SectionWrapper = ({ id, className, children, ...props }: SectionWrapperProps) => {
+const SectionWrapper = ({ id, className, children, static: isStatic, ...props }: SectionWrapperProps) => {
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -26,7 +28,7 @@ const SectionWrapper = ({ id, className, children, ...props }: SectionWrapperPro
       {...props}
     >
       <motion.div
-        style={{ opacity, scale }}
+        style={isStatic ? undefined : { opacity, scale }}
         className="w-full h-full"
       >
         {children}

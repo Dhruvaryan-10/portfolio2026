@@ -48,7 +48,7 @@ export default function SkillInfoCard() {
           transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
           className="pointer-events-none fixed z-50"
           style={{
-            bottom: "clamp(1.5rem, 4vh, 3rem)",
+            bottom: "clamp(5.5rem, 10vh, 7rem)",
             right: "clamp(1rem, 3vw, 2.5rem)",
             width: "clamp(260px, 26vw, 340px)",
           }}
