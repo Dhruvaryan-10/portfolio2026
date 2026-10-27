@@ -390,8 +390,14 @@ export const PROJECTS: Project[] = [
     tech: ["Next.js", "TypeScript", "PostgreSQL", "Drizzle ORM", "RAG", "LLM tool calling", "Auth.js"],
     live: "https://smartcaproject.vercel.app",
     github: "https://github.com/Dhruvaryan-10/smartca",
+    preview: "/assets/projects/smartca/preview.mp4",
     gallery: [
-      { src: img("smartca", "1.webp"), alt: "SmartCA landing page", caption: "Landing page" },
+      { src: img("smartca", "1.webp"), alt: "SmartCA summary with net savings and monthly income and expense chart", caption: "Summary: savings, income and expenses by month (sample data)" },
+      { src: img("smartca", "2.webp"), alt: "Tax page comparing old and new regime", caption: "Tax: both regimes computed side by side, with every step shown" },
+      { src: img("smartca", "3.webp"), alt: "Ledger with income entries", caption: "Ledger: every entry, searchable by category and month" },
+      { src: img("smartca", "4.webp"), alt: "Reports with yearly income and spending chart", caption: "Reports: income, spending and savings over the year" },
+      { src: img("smartca", "5.webp"), alt: "Ask page with rule-based suggestions", caption: "Ask: suggestions from your own spending patterns" },
+      { src: img("smartca", "6.webp"), alt: "SmartCA landing page", caption: "Landing page" },
     ],
   },
   {
@@ -445,8 +451,11 @@ export const PROJECTS: Project[] = [
     tech: ["Next.js", "TypeScript", "Express", "Gemini", "Zod", "Tailwind CSS", "Recharts"],
     live: "https://xeno-delta-silk.vercel.app",
     github: "https://github.com/Dhruvaryan-10/xeno",
+    preview: "/assets/projects/campaign-copilot/preview.mp4",
     gallery: [
-      { src: img("campaign-copilot", "1.webp"), alt: "Campaign Copilot dashboard with the AI audience builder", caption: "Dashboard with the AI audience builder" },
+      { src: img("campaign-copilot", "1.webp"), alt: "Campaign Copilot dashboard with an audience built from a sentence", caption: "A sentence becomes an audience: 993 customers, ₹50 lakh estimated revenue (seeded demo data)" },
+      { src: img("campaign-copilot", "2.webp"), alt: "AI campaign generator with channel recommendation", caption: "AI campaign generator with a channel recommendation" },
+      { src: img("campaign-copilot", "3.webp"), alt: "Campaign analytics with delivery funnel and charts", caption: "Campaign analytics from the simulated delivery callbacks" },
     ],
   },
   {
@@ -466,15 +475,15 @@ export const PROJECTS: Project[] = [
       "Designed around two personas: a full-time food rider earning ₹900 to ₹1,200 a day and a part-time quick-commerce partner working evening shifts.",
       "Specified a weekly pricing model: expected loss from rain, traffic, air quality, civic and connectivity risk in the rider's 2 km zone, times a coverage ratio, plus a risk margin.",
       "Specified payouts that need two triggers to agree: a hazard over its threshold (for example rain above 20 mm/hr for 30 minutes) and a measured drop in the rider's income, plus fraud checks.",
-      "Built a clickable Next.js prototype of the product: landing page, rider dashboard, weekly quote, coverage activation, payout history and an admin analytics view.",
+      "Built a clickable Next.js prototype: landing page, rider dashboard, weekly quote, coverage activation, payout history, admin analytics, and a delivery-app home showing where RiderShield would sit.",
     ],
     highlights: [
       "Claim-free by design: riders never fill in a form.",
-      "Six prototype screens covering the full rider and admin journey.",
+      "Seven prototype screens covering the rider, admin and delivery-app journey.",
     ],
     tldr: {
       "problem": "One rainy evening or app outage can wipe out a delivery rider's daily income.",
-      "built": "A pricing and payout design for weekly parametric cover, plus a six-screen Next.js prototype.",
+      "built": "A pricing and payout design for weekly parametric cover, plus a seven-screen Next.js prototype.",
       "result": "A complete rider and admin journey, from quote to automatic payout, ready to connect to live data."
     },
     architecture: [
@@ -505,8 +514,13 @@ export const PROJECTS: Project[] = [
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "Recharts", "Framer Motion"],
     live: "https://codeguide-nine.vercel.app",
     github: "https://github.com/Dhruvaryan-10/codeguide",
+    preview: "/assets/projects/ridershield/preview.mp4",
     gallery: [
-      { src: img("ridershield", "1.webp"), alt: "RiderShield landing page with live risk chips", caption: "Landing page with live earnings, coverage and risk signals" },
+      { src: img("ridershield", "1.webp"), alt: "RiderShield landing page", caption: "Landing page" },
+      { src: img("ridershield", "2.webp"), alt: "Weekly quote with risk breakdown", caption: "Weekly quote: premium from rain, traffic, AQI and civic risk" },
+      { src: img("ridershield", "3.webp"), alt: "Activate coverage by zone", caption: "Activate coverage for a delivery zone" },
+      { src: img("ridershield", "4.webp"), alt: "Payout history", caption: "Payout history with the trigger behind each payout" },
+      { src: img("ridershield", "5.webp"), alt: "Delivery app home with a RiderShield entry point", caption: "How it would appear inside a delivery app" },
     ],
   },
   {
@@ -562,8 +576,10 @@ export const PROJECTS: Project[] = [
     github: "https://github.com/Dhruvaryan-10/personalized-drug-response-prediction",
     gallery: [
       { src: img("drug-recommendation", "1.webp"), alt: "Streamlit dashboard ranking the top five drugs", caption: "Dashboard: top drugs for a condition" },
-      { src: img("drug-recommendation", "2.webp"), alt: "SHAP summary plot of gene features", caption: "SHAP summary: which genes drive predictions" },
-      { src: img("drug-recommendation", "3.webp"), alt: "Predicted versus actual IC50 scatter plot", caption: "Predicted vs actual IC50" },
+      { src: img("drug-recommendation", "2.webp"), alt: "Bar chart comparing R squared of four models", caption: "Model comparison: LightGBM R² 0.51 vs Random Forest, neural network and TabNet" },
+      { src: img("drug-recommendation", "3.webp"), alt: "Bar chart comparing RMSE of four models", caption: "RMSE by model" },
+      { src: img("drug-recommendation", "4.webp"), alt: "SHAP summary plot of gene features", caption: "SHAP summary: which genes drive predictions" },
+      { src: img("drug-recommendation", "5.webp"), alt: "Predicted versus actual IC50 scatter plot", caption: "Predicted vs actual IC50" },
     ],
   },
   {
@@ -639,6 +655,8 @@ export const PROJECTS: Project[] = [
     github: "https://github.com/Dhruvaryan-10/DonorDash",
     gallery: [
       { src: img("donordash", "1.webp"), alt: "DonorDash landing page", caption: "Landing page and the four-step donor journey" },
+      { src: img("donordash", "2.webp"), alt: "Donate items form", caption: "Donate: item details, photos and pickup in three steps" },
+      { src: img("donordash", "3.webp"), alt: "How it works page", caption: "How it works: listing, AI matching and charity confirmation" },
     ],
   },
   {
@@ -677,6 +695,8 @@ export const PROJECTS: Project[] = [
     github: "https://github.com/Dhruvaryan-10/Zoom-IT",
     gallery: [
       { src: img("zoomit", "1.webp"), alt: "Zoom-iT landing page", caption: "Landing page" },
+      { src: img("zoomit", "2.webp"), alt: "Choose your city", caption: "Choose your city" },
+      { src: img("zoomit", "3.webp"), alt: "Login with email or Google", caption: "Sign in with email or Google" },
     ],
   },
 ];

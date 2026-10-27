@@ -36,6 +36,26 @@ const RULES: Record<string, (p: Project) => boolean> = {
   GitHub: (p) => Boolean(p.github),
 };
 
+/**
+ * Skill hubs in the 3D project network. Each project is linked to the hubs
+ * it uses; clicking a hub filters the project grid the same way a skill does.
+ */
+export const HUBS: { label: string; match: (p: Project) => boolean }[] = [
+  { label: "Python", match: (p) => has(p, "python", "pandas", "lightgbm", "streamlit", "fastapi", "scikit-learn") },
+  { label: "TypeScript", match: (p) => has(p, "typescript") },
+  { label: "React / Next.js", match: (p) => has(p, "react", "next.js") },
+  { label: "Machine learning", match: (p) => has(p, "lightgbm", "scikit-learn", "shap", "pytorch") },
+  { label: "LLM agents & RAG", match: (p) => has(p, "gemini", "langchain", "rag", "llm tool calling") },
+  { label: "SQL databases", match: (p) => has(p, "postgresql", "mysql", "supabase", "sqlalchemy", "drizzle orm") },
+  { label: "Data & analytics", match: (p) => p.categories.includes("Data") || has(p, "echarts", "recharts") },
+  { label: "APIs", match: (p) => has(p, "fastapi", "express", "node.js") },
+  { label: "3D & IoT", match: (p) => has(p, "unity", "arduino") },
+];
+
+HUBS.forEach((h) => {
+  if (!RULES[h.label]) RULES[h.label] = h.match;
+});
+
 export const projectsForSkill = (label: string, projects: Project[]) => {
   const rule = RULES[label];
   return rule ? projects.filter(rule) : [];

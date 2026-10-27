@@ -90,8 +90,8 @@ const AnimatedBackground = () => {
         playPressSound();
         setSelectedSkill(skill);
         selectedSkillRef.current = skill;
-        splineApp.setVariable("heading", skill.label);
-        splineApp.setVariable("desc", skill.shortDescription);
+        splineApp.setVariable("heading", "");
+        splineApp.setVariable("desc", "");
       }
     });
     splineApp.addEventListener("mouseHover", handleMouseHover);
@@ -342,8 +342,8 @@ const AnimatedBackground = () => {
   useEffect(() => {
     if (!selectedSkill || !splineApp) return;
     // console.log(selectedSkill)
-    splineApp.setVariable("heading", selectedSkill.label);
-    splineApp.setVariable("desc", selectedSkill.shortDescription);
+    splineApp.setVariable("heading", "");
+    splineApp.setVariable("desc", "");
   }, [selectedSkill]);
 
   // Handle rotation and teardown animations based on active section

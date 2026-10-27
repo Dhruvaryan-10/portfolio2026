@@ -140,7 +140,7 @@ const HeroSection = () => {
                       className="cursor-can-hover"
                       aria-label="Email"
                     >
-                      <Button variant={"outline"} tabIndex={-1}>
+                      <Button variant={"outline"} tabIndex={-1} aria-label="Email">
                         <Mail size={24} />
                       </Button>
                     </Link>
@@ -151,7 +151,7 @@ const HeroSection = () => {
                       className="cursor-can-hover"
                       aria-label="GitHub"
                     >
-                      <Button variant={"outline"} tabIndex={-1}>
+                      <Button variant={"outline"} tabIndex={-1} aria-label="GitHub">
                         <SiGithub size={24} />
                       </Button>
                     </Link>
@@ -162,7 +162,7 @@ const HeroSection = () => {
                       className="cursor-can-hover"
                       aria-label="LinkedIn"
                     >
-                      <Button variant={"outline"} tabIndex={-1}>
+                      <Button variant={"outline"} tabIndex={-1} aria-label="LinkedIn">
                         <SiLinkedin size={24} />
                       </Button>
                     </Link>
@@ -173,7 +173,7 @@ const HeroSection = () => {
                       className="cursor-can-hover"
                       aria-label="LeetCode"
                     >
-                      <Button variant={"outline"} tabIndex={-1}>
+                      <Button variant={"outline"} tabIndex={-1} aria-label="LeetCode">
                         <SiLeetcode size={24} />
                       </Button>
                     </Link>

@@ -40,7 +40,7 @@ const SocialMediaButtons = () => {
       {show &&
         BUTTONS.map((button) => (
           <Link href={button.href} key={button.name} target="_blank" aria-label={button.name}>
-            <Button variant={"ghost"} tabIndex={-1}>{button.icon}</Button>
+            <Button variant={"ghost"} tabIndex={-1} aria-label={button.name}>{button.icon}</Button>
           </Link>
         ))}
     </div>
