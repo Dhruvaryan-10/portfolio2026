@@ -194,6 +194,71 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    slug: "handback",
+    name: "Handback",
+    tagline: "AI rental inspections with PayPal-held deposits (PayPal AI Hackathon 2026)",
+    categories: ["AI", "Full-Stack"],
+    year: "2026",
+    role: "Full-stack development",
+    accent: "#2563eb",
+    cover: img("handback", "cover.webp"),
+    featured: true,
+    summary:
+      "A rental-shop app that photographs an item at pick-up and return, uses AI to find only the new damage, and settles the deposit through PayPal so the customer pays for that damage and nothing else.",
+    problem:
+      "Every rental shop has had the \"that scratch was already there\" argument. Without a shared record of condition, deposits are kept or refunded in full, and neither side trusts the outcome.",
+    approach: [
+      "Built a Node.js and Express REST API over PostgreSQL with a React front-end, shipped as an installable PWA on Render.",
+      "Held the deposit as a PayPal authorization at pick-up, so $0 is charged until settlement.",
+      "Recorded a signed baseline: Gemini lists existing marks on each photo angle and the renter agrees before the item leaves.",
+      "At return, asked the model one question per angle, what is new since pick-up, and priced findings from the shop's own price list.",
+      "Modelled each rental as a state machine with per-rental locks and idempotent PayPal calls, so a retry can never charge twice.",
+    ],
+    highlights: [
+      "The AI has no payment access: the owner approves every charge and low-confidence findings go to manual review.",
+      "Money rules in code: integer cents, capped at the hold, one capture per rental.",
+      "31 Vitest tests covering money rules and the full rental flow.",
+    ],
+    stats: [
+      { value: "$0", label: "charged at pick-up" },
+      { value: "31", label: "tests on money rules and flow" },
+      { value: "5", label: "PayPal steps: authorize to refund" },
+    ],
+    tldr: {
+      problem: "Rental shops and customers argue over whether damage is new, and deposits are all-or-nothing.",
+      built: "AI photo diffing against a signed baseline, with deposits held and settled through PayPal.",
+      result: "Customers pay only for new damage, approved by a person and backed by photo evidence.",
+    },
+    architecture: [
+      "React PWA",
+      "Express REST API",
+      "Gemini: baseline + diff",
+      "Rental state machine (PostgreSQL)",
+      "PayPal authorize → capture / void",
+    ],
+    decisions: [
+      {
+        title: "Diff, not a guess",
+        why: "The model compares against a baseline the renter signed, so old marks never cost anything.",
+      },
+      {
+        title: "People decide money",
+        why: "AI findings are observations; only the settlement service calls PayPal, after the owner approves.",
+      },
+      {
+        title: "Idempotent payments",
+        why: "Per-rental locks and reused PayPal request ids mean retries cannot double-capture.",
+      },
+    ],
+    tech: ["TypeScript", "React", "Node.js", "Express", "PostgreSQL", "PayPal APIs", "Gemini", "Vitest", "PWA"],
+    live: "https://handback-pl94.onrender.com",
+    github: "https://github.com/Dhruvaryan-10/handback",
+    gallery: [
+      { src: img("handback", "1.webp"), alt: "Handback landing page with a pick-up versus return photo slider", caption: "Landing: drag to compare pick-up and return photos" },
+      { src: img("handback", "2.webp"), alt: "AI inspection view with new damage boxed and a proposed settlement", caption: "AI inspection: new damage priced, old marks ignored, uncertain findings sent to review (sample values)" },
+    ],
+  },
+  {
     slug: "ai-sdlc",
     name: "AI-SDLC Pipeline",
     tagline: "From a Statement of Work to software delivery, with AI agents",
