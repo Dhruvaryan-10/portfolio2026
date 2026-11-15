@@ -5,7 +5,7 @@ const config = {
   role: "AI Engineer · Full-Stack Developer · Data",
 
   description: {
-    long: "Portfolio of Dhruvaryan Chugh, a Computer Science student at SRM Institute of Science and Technology who builds AI products, data tools and full-stack web apps. Case studies include Fund Reality, an AI-SDLC agent pipeline, a Razorpay merchant agent, SmartCA and an Amazon ML Challenge entity-resolution model.",
+    long: "Portfolio of Dhruvaryan Chugh, a Computer Science student at SRM Institute of Science and Technology who builds AI products, data tools and full-stack web apps. Case studies include Fund Reality, an AI-SDLC agent pipeline, a Razorpay merchant agent, SmartCA, Handback (PayPal AI Hackathon) and an Amazon ML Challenge entity-resolution model.",
     short:
       "I build AI products, data tools and full-stack web apps, from the model to the interface.",
   },
@@ -54,7 +54,7 @@ const config = {
     ai: {
       role: "AI / ML Engineer",
       summary: "I build ML models and LLM agents that people can trust, and the products around them.",
-      order: ["amazon-ml", "ai-sdlc", "razorpay-agent", "drug-recommendation", "smartca", "campaign-copilot"],
+      order: ["amazon-ml", "ai-sdlc", "handback", "razorpay-agent", "drug-recommendation", "smartca", "campaign-copilot"],
     },
     data: {
       role: "Data Analyst · Data Scientist",
@@ -64,7 +64,7 @@ const config = {
     fullstack: {
       role: "Full-Stack Developer",
       summary: "I ship complete web products, from database and API to a polished interface.",
-      order: ["razorpay-agent", "smartca", "fund-reality", "campaign-copilot", "ridershield", "zoomit"],
+      order: ["razorpay-agent", "smartca", "handback", "fund-reality", "campaign-copilot", "ridershield", "zoomit"],
     },
   } as Record<string, { role: string; summary: string; order: string[] }>,
 
